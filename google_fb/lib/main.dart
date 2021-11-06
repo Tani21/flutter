@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fb/home_page.dart';
 import 'package:google_fb/sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -15,22 +16,20 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context)  =>
-     ChangeNotifierProvider(
-       create: (context) => GoogleSignInProvider(),
-     child: MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-      debugShowCheckedModeBanner: false,
-     )
-     
-    );
-  }
-
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(),
+        routes: {
+          'homepage': (context) => HomePage(),
+        },
+        debugShowCheckedModeBanner: false,
+      ));
+}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -44,43 +43,41 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
-    
-    
     return Scaffold(
       backgroundColor: Colors.white,
-      
       appBar: AppBar(
-        
-        
-        
-        title: Text("hello", style: TextStyle(color: Colors.white),),
-      ),
-      body: Center(
-        
-        child: Column(
-          
-          mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-           TextButton(onPressed: () {
-              final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-              provider.googleLogin();
-           },
-            child: Text('Sign up with google', style: TextStyle(color: Colors.black),))
-         ],
+        title: Text(
+          "hello",
+          style: TextStyle(color: Colors.white),
         ),
       ),
-    
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+                onPressed: () {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+
+                  provider.googleLogin();
+                  Navigator.pushNamed(context, "homepage");
+                  print("signnnn in ho gaya");
+                },
+                child: Text(
+                  'Sign up with google',
+                  style: TextStyle(color: Colors.black),
+                ))
+          ],
+        ),
+      ),
     );
   }
 }
